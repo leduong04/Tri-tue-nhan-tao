@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class Chess extends JFrame {
     private JButton[][] squares = new JButton[8][8];
-    private String[][] pieces = new String[8][8];
+    private String[][] board = new String[8][8];
 
     private JButton selectedSquare = null;
 
@@ -22,35 +22,42 @@ public class Chess extends JFrame {
     }
 
     private void initializeBoard() {
-        // Initialize pieces (you can customize this based on your chess piece
+        // Initialize board (you can customize this based on your chess piece
         // representations)
-        pieces[0][0] = "R";
-        pieces[0][1] = "N";
-        pieces[0][2] = "B";
-        pieces[0][3] = "Q";
-        pieces[0][4] = "K";
-        pieces[0][5] = "B";
-        pieces[0][6] = "N";
-        pieces[0][7] = "R";
-
-        pieces[7][0] = "r";
-        pieces[7][1] = "n";
-        pieces[7][2] = "b";
-        pieces[7][3] = "q";
-        pieces[7][4] = "k";
-        pieces[7][5] = "b";
-        pieces[7][6] = "n";
-        pieces[7][7] = "r";
+        
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (i == 1) {
-                    pieces[i][j] = "P";
+                    board[i][j] = "P";
                 } else if (i == 6) {
-                    pieces[i][j] = "p";
+                    board[i][j] = "p";
+                }
+                else
+                {
+                    board[i][j]="| |";
                 }
             }
         }
+
+
+        board[0][0] = "R";
+        board[0][1] = "N";
+        board[0][2] = "B";
+        board[0][3] = "Q";
+        board[0][4] = "K";
+        board[0][5] = "B";
+        board[0][6] = "N";
+        board[0][7] = "R";
+
+        board[7][0] = "r";
+        board[7][1] = "n";
+        board[7][2] = "b";
+        board[7][3] = "q";
+        board[7][4] = "k";
+        board[7][5] = "b";
+        board[7][6] = "n";
+        board[7][7] = "r";
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -80,18 +87,19 @@ public class Chess extends JFrame {
         {
             for(int j=0; j<8; j++)
             {
-                if(pieces[i][j]!=null)
-                {
-                    System.out.print(pieces[i][j]+" ");
-                }
-                else{
+                if (board[i][j].equals("| |")) {
+                    // System.out.print("  ");
                     System.out.print("  ");
                 }
+
+                else {
+                    System.out.print(board[i][j] + " ");
+                }
+
+                // System.out.print(board[i][j] + " ");
             }
             System.out.println();
         }
-
-
         System.out.println("\n\n");
     }
     private void setupGUI() {
@@ -111,6 +119,7 @@ public class Chess extends JFrame {
     }
 
     private void handleSquareClick(int row, int col) {
+        System.out.println(row+"  "+col);
         JButton clickedSquare = squares[row][col];
 
         if (selectedSquare == null) {
@@ -122,8 +131,8 @@ public class Chess extends JFrame {
             int fromCol = getColOfButton(selectedSquare);
 
             // Move the piece on the backend
-            pieces[row][col] = pieces[fromRow][fromCol];
-            pieces[fromRow][fromCol] = null;
+            board[row][col] = board[fromRow][fromCol];
+            board[fromRow][fromCol] = "| |";
 
             // Update the GUI
             setPieceOnButton(row, col);
@@ -157,8 +166,8 @@ public class Chess extends JFrame {
     }
 
     private void setPieceOnButton(int row, int col) {
-        if (pieces[row][col] != null) {
-            squares[row][col].setIcon(getPieceIcon(pieces[row][col]));
+        if (board[row][col] != null) {
+            squares[row][col].setIcon(getPieceIcon(board[row][col]));
         }
     }
 
@@ -226,7 +235,7 @@ public class Chess extends JFrame {
 
 
 
-        // Add more conditions for other pieces
+        // Add more conditions for other board
 
         // Load the image and scale it to fit the button
         ImageIcon icon = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
